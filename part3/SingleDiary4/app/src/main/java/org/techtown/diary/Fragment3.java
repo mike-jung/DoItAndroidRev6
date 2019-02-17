@@ -302,7 +302,7 @@ public class Fragment3 extends Fragment {
                      "  , count(mood) " +
                      "from " + NoteDatabase.TABLE_NOTE + " " +
                      "where create_date > '" + getMonthBefore(1) + "' " +
-                     "  and create_date <= '" + getToday() + "' " +
+                     "  and create_date < '" + getTomorrow() + "' " +
                      "group by mood";
 
         Cursor cursor = database.rawQuery(sql);
@@ -327,7 +327,7 @@ public class Fragment3 extends Fragment {
                 "  , avg(mood) " +
                 "from " + NoteDatabase.TABLE_NOTE + " " +
                 "where create_date > '" + getMonthBefore(1) + "' " +
-                "  and create_date <= '" + getToday() + "' " +
+                "  and create_date < '" + getTomorrow() + "' " +
                 "group by strftime('%w', create_date)";
 
         cursor = database.rawQuery(sql);
@@ -353,7 +353,7 @@ public class Fragment3 extends Fragment {
                 "  , avg(cast(mood as real)) " +
                 "from " + NoteDatabase.TABLE_NOTE + " " +
                 "where create_date > '" + getDayBefore(7) + "' " +
-                "  and create_date <= '" + getToday() + "' " +
+                "  and create_date < '" + getTomorrow() + "' " +
                 "group by strftime('%Y-%m-%d', create_date)";
 
         cursor = database.rawQuery(sql);
@@ -402,6 +402,15 @@ public class Fragment3 extends Fragment {
         Date todayDate = new Date();
 
         return AppConstants.dateFormat5.format(todayDate);
+    }
+
+    public String getTomorrow() {
+        Date todayDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(todayDate);
+        cal.add(java.util.Calendar.DAY_OF_MONTH, 1);
+
+        return AppConstants.dateFormat5.format(cal.getTime());
     }
 
     public String getDayBefore(int amount) {
